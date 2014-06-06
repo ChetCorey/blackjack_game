@@ -1,4 +1,4 @@
 blackjack_game
 ==============
 
-This will play a blackjack game
+This game will allow you to play blackjack.
