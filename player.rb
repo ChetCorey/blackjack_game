@@ -1,29 +1,30 @@
-require 'deck'
-require 'card'
 class Player
   def initialize
+    @hand = []
+  end
+
+  def hit(card)
+    @hand << card
+  end
+
+
+
+  def player_hand_value # this will add the value of the hand
+    i = @player_hand.count
+    @player_hand_value = 0
+    i.times do |h|
+      @player_hand_value += @player_hand[h].rank_value.to_i
+    end
+    puts "You have #{@player_hand_value}."
+    if (i == 2) && (@player_hand_value == 21)
+      @wallet.win
+      play_again
+    elsif @house_hand_value.to_i >= @player_hand_value.to_i
+      @wallet.lose
+    elsif @house_hand_value.to_i < @player_hand_value.to_i
+      @wallet.win
+    end
   end
 end
 
-class Wallet
-  def initialize
-    @wallet = wallet
-  end # initialize
-
-  def wallet
-    @chips = 10
-    chip_value = 10
-    @wallet = @chips * chip_value
-  end # chip_quantity
-
-  def bet
-    puts '    You have $' + @wallet.to_s + '.
-    How many chips would you like to bet?'
-    @bet = gets
-    @chips -= @bet.to_i
-  end
-end
-
-# h.takes_card(d.hit)
-# Hand.new.takes_card(Deck.new.hit)
-# h.add_card(deck.draw)
+Player.new

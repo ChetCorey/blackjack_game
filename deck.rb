@@ -6,8 +6,6 @@ class Deck
     @suits = [:C, :D, :H, :S]
     @deck = []
     build_deck
-    shuffle_deck
-    # test_deck_shuffle
   end
 
   def build_deck
@@ -17,27 +15,10 @@ class Deck
       s = count % 4
       @deck.push(Card.new(@ranks[r], @suits[s]))
       count += 1
-      # print @deck[r].rank  # Rank test
-      # puts @deck[s].suit  # Suit test
     end
   end
 
   def shuffle_deck
     @deck.shuffle! # changes the deck into a shuffled deck
   end
-  # def test_deck_shuffle
-  #   @rank_array = []
-  #   @suit_array = []
-  #   52.times do |i|
-  #     @rank_array << @deck[i].rank
-  #     @suit_array << @deck[i].suit
-  #   end
-  #   print @rank_array
-  #   print @suit_array
-  # end
 end
-
-Deck.new
-
-# c = Card.new(:A , :C)
-# puts c.rank
