@@ -60,14 +60,20 @@ class Game
       @player_hand_value += @player_hand[h].rank_value
     end
     puts "You have #{@player_hand_value}."
-    if @player_hand.rank.include(:A) && @player_hand_value <= 11
+    if (@player_hand.rank.include(:A) && @player_hand_value <= 11)
       @player_hand_value += 10
+      if (i == 2 && @player_hand_value == 21)
+        puts "BLACKJACK"
+        @wallet.win
+      end
+    elsif @player_hand.rank.include(:A) && @player_hand_value <= 11
     elsif @house_hand_value >= @player_hand_value
       @wallet.lose
     elsif @house_hand_value < @player_hand_value
       @wallet.win
     end
   end
+
 
   def house_hand_value
     i = @house_hand.count
