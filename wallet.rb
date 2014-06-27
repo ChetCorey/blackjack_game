@@ -18,13 +18,11 @@ class Wallet
     puts "You have $#{@wallet}."
     puts "How many chips would you like to bet?"
     @bet = gets.to_i
-    @chips = @chips - @bet
     @winnings = @bet * @chip_value
     @losings = @bet * @chip_value
   end
 
   def win
-    @chips = @chips + (2 * @bet)
     @wallet = @wallet + (@bet * @chip_value)
     puts "You Won $#{@winnings}."
     puts "You now have $#{@wallet}."
