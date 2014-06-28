@@ -24,6 +24,7 @@ class Game
   end
 
   def hit(user)
+    check_deck
     user << @deck.shift
   end # hit_player
 
@@ -31,6 +32,13 @@ class Game
     hit(user)
     hit(user)
   end # deal
+
+  def check_deck
+    if @deck.count == 1
+      @deck = Deck.new.shuffle_deck
+      puts "We just opened a new #{@deck.count} card deck."
+    end
+  end
 
   def see_hand(user)
     puts 'Your hand is'
@@ -90,13 +98,8 @@ class Game
     end
     @house_hand.each do |card|
       if card.rank == :A
-        if @player_hand_value <= 11
-          @player_hand_value += 10
-          if (@player_hand.count == 2 && @player_hand_value == 21)
-            puts "BLACKJACK"
-            @wallet.win
-            play_again
-          end
+        if @house_hand_value <= 11
+          @house_hand_value += 10
         end
       end
     end
@@ -141,11 +144,11 @@ class Game
       puts "the house has #{@house_hand_value}. You WIN"
       @wallet.win
       play_again
+    end
   end
 
   def play_again
     puts 'Would you like to play again? [y/n]'
-    puts @deck.count
     responce = gets
     if responce.chomp == 'y'
       # puts "test"

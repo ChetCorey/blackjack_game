@@ -18,6 +18,10 @@ class Wallet
     puts "You have $#{@wallet}."
     puts "How many chips would you like to bet?"
     @bet = gets.to_i
+    unless @bet.between?(1,@wallet)
+      puts "please only bet what you have"
+      bet
+    end
     @winnings = @bet * @chip_value
     @losings = @bet * @chip_value
   end
@@ -32,5 +36,9 @@ class Wallet
     @wallet = @wallet - (@bet * @chip_value)
     puts "You lost $#{@losings}."
     puts "You now have $#{@wallet}."
+    if @wallet == 0
+      puts "GAME OVER"
+      exit
+    end
   end
 end
