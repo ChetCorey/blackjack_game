@@ -23,6 +23,16 @@ class Game
     house_hand_value
   end
 
+  def restart
+    @player_hand = []
+    @house_hand = []
+    deal(@player_hand)
+    deal(@house_hand)
+    see_hand(@player_hand)
+    player_hand_value
+    house_hand_value
+  end
+
   def hit(user)
     check_deck
     user << @deck.shift
@@ -36,7 +46,7 @@ class Game
   def check_deck
     if @deck.count == 1
       @deck = Deck.new.shuffle_deck
-      puts "We just opened a new #{@deck.count} card deck."
+      puts ".............   We just opened a new #{@deck.count} card deck   ................"
     end
   end
 
@@ -49,27 +59,19 @@ class Game
     end
   end
 
-  # def hand_value(hand_value, hand)
-  #   @player_hand_value = 0
-  #   @player_hand.each do |card| # this added of the value of the cards in the hand.
-  #     @player_hand_value += card.rank_value
-  #   end
-  #   @player_hand.each do |card|
-  #     if card.rank == :A && @player_hand_value <= 11
-  #       @player_hand_value += 10
-  #       if (@player_hand.count == 2 && @player_hand_value == 21)
-  #         puts "BLACKJACK"
-  #         @wallet.win
-  #         play_again
-  #       end
-  #     end
-  #   end
-  #   puts "You have #{@player_hand_value}."
-  #   if @player_hand_value < 22
-  #     hit_prompt(@player_hand)
-  #   else @player_hand_value > 21
-  #     @wallet.lose
-  #     play_again
+  # def ace_check(hand, hand_value)
+  #   i = hand.count
+  #   i.times do |h|
+  #     if (hand.rank.include(:A) && hand_value <= 11)
+  #       hand_value += 10
+  #     end # if
+  #   end # i
+  # end
+  #
+  # def check_blackJack(hand_value)
+  #   assurt (i == 2 && hand_value == 21)
+  #     puts "BLACKJACK"
+  #     @wallet.win
   #   end
   # end
 
@@ -79,12 +81,14 @@ class Game
       @player_hand_value += card.rank_value
     end
     @player_hand.each do |card|
-      if card.rank == :A && @player_hand_value <= 11
-        @player_hand_value += 10
-        if (@player_hand.count == 2 && @player_hand_value == 21)
-          puts "BLACKJACK"
-          @wallet.win
-          play_again
+      if card.rank == :A
+        if @player_hand_value <= 11
+          @player_hand_value += 10
+          if (@player_hand.count == 2 && @player_hand_value == 21)
+            puts "*************** BLACKJACK **************"
+            @wallet.win
+            play_again
+          end
         end
       end
     end
@@ -103,8 +107,10 @@ class Game
       @house_hand_value += card.rank_value
     end
     @house_hand.each do |card|
-      if card.rank == :A && @house_hand_value <= 11
-        @house_hand_value += 10
+      if card.rank == :A
+        if @house_hand_value <= 11
+          @house_hand_value += 10
+        end
       end
     end
     if @house_hand_value <= 16
@@ -145,23 +151,29 @@ class Game
       @wallet.lose
       play_again
     elsif @house_hand_value < @player_hand_value
-      puts "the house has #{@house_hand_value}. You WIN"
+      puts "the house has #{@house_hand_value}. Winner"
       @wallet.win
       play_again
     end
   end
 
   def play_again
-    puts 'Would you like to play again? [y/n]'
-    responce = gets
-    if responce.chomp == 'y'
-      # puts "test"
-      start
-    elsif responce.chomp == 'n'
-      exit
+    puts '-------     Place your bet if you would like to play again     -------'
+    puts "-------            Otherwise type anything to quit             -------"
+    responce = gets.to_i
+    if responce.between?(1,@wallet.wallet_value)
+      @wallet.new_bet(responce)
+      restart
     else
-      puts "please type y for yes or n for no"
-      play_again
+      puts "???      Are you sure you want to quit.        ???"
+      puts "???       Type 'play' to keep playing          ???"
+      puts "???   Otherwise type anything to really quit   ???"
+      responce_again = gets
+      if responce_again.chomp == 'play' || responce_again.chomp == 'back'
+        play_again
+     else
+       exit
+     end
     end
   end
 end

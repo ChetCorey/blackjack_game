@@ -26,10 +26,22 @@ class Wallet
     @losings = @bet * @chip_value
   end
 
+  def new_bet(new_bet)
+    @bet = new_bet
+    unless @bet.between?(1,@wallet)
+      puts "please only bet what you have"
+      bet
+    end
+    @winnings = @bet * @chip_value
+    @losings = @bet * @chip_value
+  end
+
   def win
     @wallet = @wallet + (@bet * @chip_value)
-    puts "You Won $#{@winnings}."
-    puts "You now have $#{@wallet}."
+    puts "  "
+    puts "************           You Won $#{@winnings}            ************"
+    puts "************        You now have $#{@wallet}          ************"
+    puts "  "
   end
 
   def lose
@@ -37,8 +49,12 @@ class Wallet
     puts "You lost $#{@losings}."
     puts "You now have $#{@wallet}."
     if @wallet == 0
-      puts "GAME OVER"
+      puts "------------------GAME OVER-------------------"
       exit
     end
+  end
+
+  def wallet_value
+    @wallet
   end
 end
